@@ -106,10 +106,10 @@ public class MappingServiceHelper {
                     case "getcount":
                         oReplyBean = oTipousuarioService.getCount();
                         break;
-                        case "getcountx":
+                    case "getcountx":
                         oReplyBean = oTipousuarioService.getCountX();
                         break;
-                         case "getpagex":
+                    case "getpagex":
                         oReplyBean = oTipousuarioService.getPageX();
                         break;
                     default:
@@ -135,10 +135,10 @@ public class MappingServiceHelper {
                     case "getcount":
                         oReplyBean = oProductoService.getCount();
                         break;
-                        case "getcountx":
+                    case "getcountx":
                         oReplyBean = oProductoService.getCountX();
                         break;
-                         case "getpagex":
+                    case "getpagex":
                         oReplyBean = oProductoService.getPageX();
                         break;
                     default:
@@ -164,10 +164,10 @@ public class MappingServiceHelper {
                     case "getcount":
                         oReplyBean = oPedidoService.getCount();
                         break;
-                        case "getcountx":
+                    case "getcountx":
                         oReplyBean = oPedidoService.getCountX();
                         break;
-                         case "getpagex":
+                    case "getpagex":
                         oReplyBean = oPedidoService.getPageX();
                         break;
                     default:
@@ -193,10 +193,10 @@ public class MappingServiceHelper {
                     case "getcount":
                         oReplyBean = oLineaPedidoService.getCount();
                         break;
-                        case "getcountx":
+                    case "getcountx":
                         oReplyBean = oLineaPedidoService.getCountX();
                         break;
-                        case "getpagex":
+                    case "getpagex":
                         oReplyBean = oLineaPedidoService.getPageX();
                         break;
                     default:
@@ -204,7 +204,7 @@ public class MappingServiceHelper {
                         break;
                 }
                 break;
-                case "carrito":
+            case "carrito":
                 CarritoSpecificServiceImplementation oCarritoService = new CarritoSpecificServiceImplementation(oRequest);
                 switch (op) {
                     case "add":
@@ -221,6 +221,9 @@ public class MappingServiceHelper {
                         break;
                     case "empty":
                         oReplyBean = oCarritoService.empty();
+                        break;
+                    case "getcount":
+                        oReplyBean = oCarritoService.count();
                         break;
                     default:
                         oReplyBean = new ReplyBean(500, EncodingUtilHelper.quotate("Operation not found : Please contact your administrator"));

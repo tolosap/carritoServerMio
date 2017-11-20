@@ -164,6 +164,8 @@ public class CarritoSpecificServiceImplementation implements TableServiceCarrito
             ReplyBean oReplyBean = null;
             ConnectionInterface oPooledConnection = null;
             Date fecha = new Date(456789123);
+            Integer numped;
+            String strJson;
             try {
                 oPooledConnection = AppConfigurationHelper.getSourceConnection();
                 oConnection = oPooledConnection.newConnection();
@@ -173,6 +175,8 @@ public class CarritoSpecificServiceImplementation implements TableServiceCarrito
                 PedidoSpecificBeanImplementation oPedidoBean = new PedidoSpecificBeanImplementation(oUsuarioBean.getId(), fecha, true);
                 PedidoSpecificDaoImplementation oPedidoDao = new PedidoSpecificDaoImplementation(oConnection, (UsuarioSpecificBeanImplementation) oRequest.getSession().getAttribute("user"), null);
                 oPedidoBean.setId(oPedidoDao.set(oPedidoBean));
+                
+                numped = oPedidoDao.set(oPedidoBean);
                 
                 ProductoSpecificBeanImplementation oProductoBean = null;
                 ProductoSpecificDaoImplementation oProductoDao = new ProductoSpecificDaoImplementation(oConnection, (UsuarioSpecificBeanImplementation) oRequest.getSession().getAttribute("user"), null);
@@ -190,6 +194,8 @@ public class CarritoSpecificServiceImplementation implements TableServiceCarrito
                     oProductoBean.setExistencias(oProductoBean.getExistencias() - newCantidad);
                     oProductoDao.set(oProductoBean);
                 }
+                Gson oGson = AppConfigurationHelper.getGson();
+                strJson = oGson.toJson(numped);
                 alCarrito.clear();
                 oConnection.commit();
             } catch (Exception ex) {
@@ -205,7 +211,7 @@ public class CarritoSpecificServiceImplementation implements TableServiceCarrito
                     AppConfigurationHelper.getSourceConnection().disposeConnection();
                 }
             }
-            return oReplyBean = new ReplyBean(200, "Compra realizada correctamente");
+            return oReplyBean = new ReplyBean(200, strJson);
         } else {
             return new ReplyBean(401, "Unauthorized operation");
         }
@@ -233,5 +239,17 @@ public class CarritoSpecificServiceImplementation implements TableServiceCarrito
             return new ReplyBean(401, "Unauthorized operation");
         }
     }
-
+    
+    public ReplyBean count() throws Exception {
+        if (this.checkPermission("count")) {
+            ArrayList<CarritoSpecificBeanImplementation> alCarrito = (ArrayList) oRequest.getSession().getAttribute("carrito");
+            ReplyBean oReplyBean = null;            
+            Gson oGson = AppConfigurationHelper.getGson();           
+            String strJson = oGson.toJson(alCarrito.size());
+            oReplyBean = new ReplyBean(200, strJson);
+            return oReplyBean;
+        } else {
+            return new ReplyBean(401, "Unauthorized operation");
+        }
+    }
 }
